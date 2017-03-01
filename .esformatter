@@ -1,0 +1,26 @@
+{
+  "plugins": [
+    "esformatter-collapse-objects",
+    "esformatter-quotes",
+    "esformatter-braces",
+    "esformatter-semicolons",
+    "esformatter-remove-trailing-commas",
+    "esformatter-flow"
+  ],
+  "quotes": {
+    "type": "single",
+    "avoidEscape": true
+  },
+  "whiteSpace": {
+    "before": {
+      "PropertyName": 1
+    }
+  },
+  "collapseObjects": {
+    "ObjectExpression": {
+      "maxLineLength": 180,
+      "maxKeys": 3,
+      "maxDepth": 2
+    }
+  }
+}
