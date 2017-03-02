@@ -13,7 +13,8 @@
   },
   "whiteSpace": {
     "before": {
-      "PropertyName": 1
+      "PropertyName": 1,
+      "FunctionExpressionOpeningBrace": 1
     }
   },
   "collapseObjects": {
