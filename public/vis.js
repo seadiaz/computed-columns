@@ -5,8 +5,7 @@ import { Parser } from 'expr-eval';
 import n2l from 'number-to-letter';
 
 const module = uiModules.get('kibana/computed-columns', ['kibana']);
-
-module.controller('KbnTableRatioVisController', ($scope, $element, Private) => {
+module.controller('ComputedColumnsVisController', ($scope, $element, Private) => {
 
   const tabifyAggResponse = Private(AggResponseTabifyTabifyProvider);
 
@@ -23,6 +22,38 @@ module.controller('KbnTableRatioVisController', ($scope, $element, Private) => {
     return output;
   };
 
+  const createParser = (computedColumn) => {
+    let expression = _.replace(computedColumn.formula, /col\[\d+\]/g, (value) => {
+      let cleanValue = /(\d+)/.exec(value)[1];
+      return n2l(cleanValue);
+    });
+    return Parser.parse(expression);
+
+  };
+
+  const createColumn = (tableColumn, computedColumn) => {
+    let newColumn = _.cloneDeep(tableColumn);
+    newColumn.aggConfig = tableColumn.aggConfig;
+    newColumn.aggConfig.id = '1.computed-column';
+    newColumn.aggConfig.key = 'computed-column';
+    newColumn.title = computedColumn.label;
+    return newColumn;
+  };
+
+  const createRows = (rows, computedColumn) => {
+    let parser = createParser(computedColumn);
+    return _.map(rows, (row) => {
+      let newCell = _.cloneDeep(row[0]);
+      let expressionParams = createExpressionsParams(computedColumn.formula, row);
+      newCell.aggConfig = row[0].aggConfig;
+      newCell.$order = row.length + 1;
+      newCell.value = parser.evaluate(expressionParams);
+      newCell.key = _.random(10000);
+      row.push(newCell);
+      return row;
+    });
+  };
+
   $scope.sort = $scope.vis.params.sort;
   $scope.$watchCollection('sort', (newSort) => {
     $scope.uiState.set('vis.params.sort', newSort);
@@ -33,9 +64,6 @@ module.controller('KbnTableRatioVisController', ($scope, $element, Private) => {
     let tableGroups = $scope.tableGroups = null;
     let hasSomeRows = $scope.hasSomeRows = null;
     let computedColumns = $scope.vis.params.computedColumns;
-    let computedColumn = _.head(computedColumns);
-
-    console.log('ratios: ', computedColumns);
 
     if (resp) {
       const vis = $scope.vis;
@@ -47,32 +75,11 @@ module.controller('KbnTableRatioVisController', ($scope, $element, Private) => {
         asAggConfigResults: true
       });
 
-      console.log('formula: ', computedColumn.formula);
-      let expression = _.replace(computedColumn.formula, /col\[\d+\]/g, (value) => {
-        let cleanValue = /(\d+)/.exec(value)[1];
-        return n2l(cleanValue);
-      });
-      console.log('expression: ', expression);
-      let parser = Parser.parse(expression);
-
-      console.log('.tables: ', tableGroups.tables);
-      _.forEach(tableGroups.tables, (table) => {
-        let newColumn = _.cloneDeep(table.columns[0]);
-        newColumn.aggConfig = table.columns[0].aggConfig;
-        newColumn.aggConfig.id = '1.computed-column';
-        newColumn.aggConfig.key = 'computed-column';
-        newColumn.title = computedColumn.label;
-        table.columns.push(newColumn);
-        table.rows = _.map(table.rows, (row) => {
-          let newCell = _.cloneDeep(row[0]);
-          let expressionParams = createExpressionsParams(computedColumn.formula, row);
-          console.log('expression params:', expressionParams);
-          newCell.aggConfig = row[0].aggConfig;
-          newCell.$order = row.length + 1;
-          newCell.value = parser.evaluate(expressionParams);
-          newCell.key = _.random(10000);
-          row.push(newCell);
-          return row;
+      _.forEach(computedColumns, (computedColumn) => {
+        _.forEach(tableGroups.tables, (table) => {
+          let newColumn = createColumn(table.columns[0], computedColumn);
+          table.columns.push(newColumn);
+          table.rows = createRows(table.rows, computedColumn);
         });
       });
 

@@ -17,7 +17,7 @@ function ExtendedMetricVisProvider(Private) {
   return new TemplateVisType({
     name: 'computed-columns',
     title: 'Computed Columns',
-    description: 'Visualization plugin for Kibana like a table but with computed columns',
+    description: 'Same functionality than Data Table, but after data processing, computed columns can be added with math expressions.',
     icon: 'fa-table',
     template: visTemplate,
     params: {

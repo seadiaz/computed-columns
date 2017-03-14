@@ -13,7 +13,7 @@ TODO
 
 ## Roadmap
 
-TODO
+* Selectable total function.
 
 ## development
 

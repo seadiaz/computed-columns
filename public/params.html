@@ -1,49 +1,7 @@
-<div class="form-group">
-  <label>Per Page</label>
-  <input type="number" ng-model="vis.params.perPage" class="form-control">
-</div>
-
-<div class="checkbox">
-  <label>
-    <input type="checkbox" ng-model="vis.params.showMeticsAtAllLevels">
-    Show metrics for every bucket/level
-  </label>
-</div>
-
-<div class="checkbox">
-  <label>
-    <input type="checkbox" ng-model="vis.params.showPartialRows">
-    Show partial rows
-  </label>
-</div>
-
-<div class="checkbox">
-  <label>
-    <input type="checkbox" ng-model="metricsAtAllLevels" disabled>
-    Calculate metrics for every bucket/level
-  </label>
-</div>
-
-<div class="checkbox">
-  <label>
-    <input type="checkbox" ng-model="vis.params.showTotal">
-    Show total
-  </label>
-</div>
-
-<div>
-  <label>Total function</label>
-  <select ng-disabled="!vis.params.showTotal"
-          class="form-control"
-          ng-model="vis.params.totalFunc"
-          ng-options="x for x in totalAggregations">
-  </select>
-</div>
-
-<div ng-controller="KbnTableRatioParamsController" style="width: 100%;">
-    <div draggable-container="$parent.vis.params.ratios"
+<div class="computed-columns-options-container" ng-controller="ComputedColumnsParamsVisController" style="width: 100%;">
+    <div draggable-container="$parent.vis.params.computedColumns"
           style="width: 100%;">
-        <div ng-repeat="output in $parent.vis.params.ratios"
+        <div ng-repeat="output in $parent.vis.params.computedColumns"
              draggable-item="output"
              style="width: 100%;">
             <div class="vis-editor-agg-header output" style="width: 100%;">
@@ -57,7 +15,7 @@
 
                 <!-- title -->
                 <span class="vis-editor-agg-header-title">
-                    Output
+                    Column
                 </span>
 
                 <!-- description -->
@@ -66,7 +24,7 @@
                 </span>
 
                 <!-- buttons -->
-                <div ng-show="vis.params.ratios.length > 1" class="vis-editor-agg-header-controls btn-group">
+                <div ng-show="vis.params.computedColumns.length > 1" class="vis-editor-agg-header-controls btn-group">
                     <button
                         ng-click="output.enabled = !output.enabled"
                         aria-label="{{output.enabled ? 'Disable' : 'Enable'}} Output"
@@ -112,11 +70,53 @@
             </div>
         </div>
     </div>
-    <!-- <div ng-click="addComputedColumn($parent.vis.params.computedColumns)" class="vis-editor-agg-wide-btn">
+    <div ng-click="addComputedColumn($parent.vis.params.computedColumns)" class="vis-editor-agg-wide-btn">
       <div>
         <div class="btn btn-sm btn-primary">
-          Add output
+          Add column
         </div>
       </div>
-    </div> -->
+    </div>
 </div>
+
+<div class="form-group">
+  <label>Per Page</label>
+  <input type="number" ng-model="vis.params.perPage" class="form-control">
+</div>
+
+<div class="checkbox">
+  <label>
+    <input type="checkbox" ng-model="vis.params.showMeticsAtAllLevels">
+    Show metrics for every bucket/level
+  </label>
+</div>
+
+<div class="checkbox">
+  <label>
+    <input type="checkbox" ng-model="vis.params.showPartialRows">
+    Show partial rows
+  </label>
+</div>
+
+<div class="checkbox">
+  <label>
+    <input type="checkbox" ng-model="metricsAtAllLevels" disabled>
+    Calculate metrics for every bucket/level
+  </label>
+</div>
+
+<div class="checkbox">
+  <label>
+    <input type="checkbox" ng-model="vis.params.showTotal">
+    Show total
+  </label>
+</div>
+
+<!-- <div>
+  <label>Total function</label>
+  <select ng-disabled="!vis.params.showTotal"
+          class="form-control"
+          ng-model="vis.params.totalFunc"
+          ng-options="x for x in totalAggregations">
+  </select>
+</div> -->
