@@ -23,7 +23,7 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
   };
 
   const createParser = (computedColumn) => {
-    let expression = _.replace(computedColumn.formula, /col\[\d+\]/g, (value) => {
+    let expression = computedColumn.formula.replace(/col\[\d+\]/g, (value) => {
       let cleanValue = /(\d+)/.exec(value)[1];
       return n2l(cleanValue);
     });

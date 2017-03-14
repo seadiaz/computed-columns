@@ -1,15 +1,28 @@
 # Computed Columns
 
 > An awesome Kibana plugin.
-> This visualization plugin is like a table, but with computed columns.
-> Every new columns is a computation from normal basics columns. Every new column
-> has it own expression (e.g. col[0] * col[1] / 100).
+
+This visualization plugin is like a table, but with computed columns.
+Every new columns is a computation from normal basics columns. Every new column
+has it own expression (e.g. col[0] * col[1] / 100).
 
 ---
 
+## Considerations
+
+* Any mathematical expression can be used to create computed columns. Even parentheses can be used to group expressions - e.g. (col[0] - col[1]) / col[0]
+* To refence a colums use word _col_ followed by brackets with zero base index inside - e.g. col[1] = column 1
+* Computed column can be used to create new computed columns
+* Multiples computed colums will be computed in order, thous, you can only use column index n-1.
+* Current Release Version: 0.1.1
+
 ## Install
 
-TODO
+#### From Kibana Installation Path:
+`./bin/kibana-plugin install https://github.com/seadiaz/computed-columns/releases/download/x.y.z/computed-columns-x.y.z.zip`
+
+#### From Docker Image:
+`kibana-plugin install https://github.com/seadiaz/computed-columns/releases/download/x.y.z/computed-columns-x.y.z.zip`
 
 ## Roadmap
 
