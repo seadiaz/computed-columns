@@ -1,8 +1,19 @@
-# ratio
+# Computed Columns
 
-> An awesome Kibana plugin
+> An awesome Kibana plugin.
+> This visualization plugin is like a table, but with computed columns.
+> Every new columns is a computation from normal basics columns. Every new column
+> has it own expression (e.g. col[0] * col[1] / 100).
 
 ---
+
+## Install
+
+TODO
+
+## Roadmap
+
+TODO
 
 ## development
 

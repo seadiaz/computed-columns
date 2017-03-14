@@ -1,10 +1,10 @@
 {
-  "name": "ratio",
+  "name": "computed-columns",
   "version": "0.1.0",
-  "description": "An awesome Kibana plugin",
+  "description": "This visualization plugin is like a table, but with computed columns",
   "main": "index.js",
   "kibana": {
-    "version": "5.0.2"
+    "version": "5.2.0"
   },
   "scripts": {
     "lint": "eslint",

@@ -88,7 +88,7 @@
                     </button>
 
                     <button
-                        aria-label="Remove Output" ng-click="removeRatio(output, $parent.vis.params.ratios)"
+                        aria-label="Remove Output" ng-click="removeComputedColumn(output, $parent.vis.params.computedColumns)"
                         tooltip="Remove Output"
                         tooltip-append-to-body="true"
                         type="button" class="btn btn-xs btn-danger">
@@ -112,7 +112,7 @@
             </div>
         </div>
     </div>
-    <!-- <div ng-click="addRatio($parent.vis.params.ratios)" class="vis-editor-agg-wide-btn">
+    <!-- <div ng-click="addComputedColumn($parent.vis.params.computedColumns)" class="vis-editor-agg-wide-btn">
       <div>
         <div class="btn btn-sm btn-primary">
           Add output

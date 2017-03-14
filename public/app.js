@@ -1,13 +1,12 @@
-import 'plugins/ratio/less/main.less';
-// import 'ui/autoload/styles';
-import 'plugins/ratio/ratio_vis/vis';
-import 'plugins/ratio/ratio_vis/params';
+import 'plugins/computed-columns/main.less';
+import 'plugins/computed-columns/vis';
+import 'plugins/computed-columns/params';
 
 import TemplateVisTypeTemplateVisTypeProvider from 'ui/template_vis_type/template_vis_type';
 import VisSchemasProvider from 'ui/vis/schemas';
 
-import visTemplate from 'plugins/ratio/ratio_vis/vis.html';
-import paramsTemplate from 'plugins/ratio/ratio_vis/params.html';
+import visTemplate from 'plugins/computed-columns/vis.html';
+import paramsTemplate from 'plugins/computed-columns/params.html';
 
 require('ui/registry/vis_types').register(ExtendedMetricVisProvider);
 
@@ -16,9 +15,9 @@ function ExtendedMetricVisProvider(Private) {
   const Schemas = Private(VisSchemasProvider);
 
   return new TemplateVisType({
-    name: 'table_with_ratio',
-    title: 'Table with ratio',
-    description: 'Impeke catnuhve jalape peh tu sibif papega juocusa ibispiz ge izoliv tukwipaj duci poiwo mimogode ziv ric ecosi.',
+    name: 'computed-columns',
+    title: 'Computed Columns',
+    description: 'Visualization plugin for Kibana like a table but with computed columns',
     icon: 'fa-table',
     template: visTemplate,
     params: {
@@ -32,7 +31,7 @@ function ExtendedMetricVisProvider(Private) {
         },
         showTotal: false,
         totalFunc: 'sum',
-        ratios: [{
+        computedColumns: [{
           formula: 'col[0] * col[0]',
           label: 'Value squared',
           enabled: true

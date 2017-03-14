@@ -4,7 +4,7 @@ import uiModules from 'ui/modules';
 import { Parser } from 'expr-eval';
 import n2l from 'number-to-letter';
 
-const module = uiModules.get('kibana/ratio', ['kibana']);
+const module = uiModules.get('kibana/computed-columns', ['kibana']);
 
 module.controller('KbnTableRatioVisController', ($scope, $element, Private) => {
 
@@ -29,13 +29,13 @@ module.controller('KbnTableRatioVisController', ($scope, $element, Private) => {
   });
 
   $scope.$watchMulti(['esResponse', 'vis.params'], ([resp]) => {
-    console.debug('[ratio] Watch es response and vis params called');
+    console.debug('[computed-columns] Watch es response and vis params called');
     let tableGroups = $scope.tableGroups = null;
     let hasSomeRows = $scope.hasSomeRows = null;
-    let ratios = $scope.vis.params.ratios;
-    let ratio = _.head(ratios);
+    let computedColumns = $scope.vis.params.computedColumns;
+    let computedColumn = _.head(computedColumns);
 
-    console.log('ratios: ', ratios);
+    console.log('ratios: ', computedColumns);
 
     if (resp) {
       const vis = $scope.vis;
@@ -47,8 +47,8 @@ module.controller('KbnTableRatioVisController', ($scope, $element, Private) => {
         asAggConfigResults: true
       });
 
-      console.log('formula: ', ratio.formula);
-      let expression = _.replace(ratio.formula, /col\[\d+\]/g, (value) => {
+      console.log('formula: ', computedColumn.formula);
+      let expression = _.replace(computedColumn.formula, /col\[\d+\]/g, (value) => {
         let cleanValue = /(\d+)/.exec(value)[1];
         return n2l(cleanValue);
       });
@@ -59,13 +59,13 @@ module.controller('KbnTableRatioVisController', ($scope, $element, Private) => {
       _.forEach(tableGroups.tables, (table) => {
         let newColumn = _.cloneDeep(table.columns[0]);
         newColumn.aggConfig = table.columns[0].aggConfig;
-        newColumn.aggConfig.id = '1.ratio';
-        newColumn.aggConfig.key = 'ratio';
-        newColumn.title = ratio.label;
+        newColumn.aggConfig.id = '1.computed-column';
+        newColumn.aggConfig.key = 'computed-column';
+        newColumn.title = computedColumn.label;
         table.columns.push(newColumn);
         table.rows = _.map(table.rows, (row) => {
           let newCell = _.cloneDeep(row[0]);
-          let expressionParams = createExpressionsParams(ratio.formula, row);
+          let expressionParams = createExpressionsParams(computedColumn.formula, row);
           console.log('expression params:', expressionParams);
           newCell.aggConfig = row[0].aggConfig;
           newCell.$order = row.length + 1;
