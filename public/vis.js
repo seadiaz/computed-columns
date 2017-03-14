@@ -31,25 +31,29 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
 
   };
 
-  const createColumn = (tableColumn, computedColumn) => {
+  const createColumn = (tableColumn, computedColumn, index) => {
     let newColumn = _.cloneDeep(tableColumn);
     newColumn.aggConfig = tableColumn.aggConfig;
-    newColumn.aggConfig.id = '1.computed-column';
-    newColumn.aggConfig.key = 'computed-column';
+    newColumn.aggConfig.id = `1.computed-column-${index}`;
+    newColumn.aggConfig.key = `computed-column-${index}`;
     newColumn.title = computedColumn.label;
+    console.log('old column:', tableColumn);
+    console.log('new column:', newColumn);
     return newColumn;
   };
 
-  const createRows = (rows, computedColumn) => {
+  const createRows = (column, rows, computedColumn) => {
     let parser = createParser(computedColumn);
     return _.map(rows, (row) => {
       let newCell = _.cloneDeep(row[0]);
       let expressionParams = createExpressionsParams(computedColumn.formula, row);
       newCell.aggConfig = row[0].aggConfig;
-      newCell.$order = row.length + 1;
+      newCell.$order = row[0].$order + row.length;
       newCell.value = parser.evaluate(expressionParams);
-      newCell.key = _.random(10000);
+      newCell.key = newCell.value;
       row.push(newCell);
+      console.log('old cell:', row[0]);
+      console.log('new cell:', newCell);
       return row;
     });
   };
@@ -75,11 +79,11 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
         asAggConfigResults: true
       });
 
-      _.forEach(computedColumns, (computedColumn) => {
+      _.forEach(computedColumns, (computedColumn, index) => {
         _.forEach(tableGroups.tables, (table) => {
-          let newColumn = createColumn(table.columns[0], computedColumn);
+          let newColumn = createColumn(table.columns[0], computedColumn, index);
           table.columns.push(newColumn);
-          table.rows = createRows(table.rows, computedColumn);
+          table.rows = createRows(newColumn, table.rows, computedColumn);
         });
       });
 
