@@ -1,12 +1,12 @@
-import 'plugins/computed-columns/main.less';
-import 'plugins/computed-columns/vis';
-import 'plugins/computed-columns/params';
+import 'plugins/computed-columns/computed-columns.less';
+import 'plugins/computed-columns/computed-columns-vis';
+import 'plugins/computed-columns/computed-columns-params';
 
 import TemplateVisTypeTemplateVisTypeProvider from 'ui/template_vis_type/template_vis_type';
 import VisSchemasProvider from 'ui/vis/schemas';
 
-import visTemplate from 'plugins/computed-columns/vis.html';
-import paramsTemplate from 'plugins/computed-columns/params.html';
+import visTemplate from 'plugins/computed-columns/computed-columns-vis.html';
+import paramsTemplate from 'plugins/computed-columns/computed-columns-params.html';
 
 require('ui/registry/vis_types').register(ExtendedMetricVisProvider);
 
