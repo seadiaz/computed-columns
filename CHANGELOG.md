@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2017-03-31
+
+### Added
+- Output format.
+
+### Fixed
+- Create new AggConfigResult instead clone cell.
+- Validate column value is a number.
+
 ## [0.1.1] - 2017-03-13
 
 ### Changed

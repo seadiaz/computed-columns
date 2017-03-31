@@ -18,7 +18,12 @@ module.controller('ComputedColumnsParamsVisController', ($scope) => {
   });
 
   $scope.addComputedColumn = (computedColumns) => {
-    computedColumns.push({formula: 'col[0] * col[0]', label: 'Value squared', enabled: true});
+    computedColumns.push({
+      formula: 'col[0] * col[0]',
+      label: 'Value squared',
+      format: '0,0',
+      enabled: true
+    });
   };
 
   $scope.removeComputedColumn = (output, computedColumns) => {

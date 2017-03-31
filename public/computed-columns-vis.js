@@ -1,13 +1,17 @@
 import _ from 'lodash';
+import VisAggConfigProvider from 'ui/vis/agg_config';
+import AggConfigResult from 'ui/vis/agg_config_result';
 import AggResponseTabifyTabifyProvider from 'ui/agg_response/tabify/tabify';
 import uiModules from 'ui/modules';
 import { Parser } from 'expr-eval';
 import n2l from 'number-to-letter';
+import numeral from 'numeral';
 
 const module = uiModules.get('kibana/computed-columns', ['kibana']);
 module.controller('ComputedColumnsVisController', ($scope, $element, Private) => {
 
   const tabifyAggResponse = Private(AggResponseTabifyTabifyProvider);
+  const AggConfig = Private(VisAggConfigProvider);
 
   const uiStateSort = ($scope.uiState) ? $scope.uiState.get('vis.params.sort') : {};
   _.assign($scope.vis.params.sort, uiStateSort);
@@ -17,7 +21,7 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
     let myArray;
     let output = {};
     while ((myArray = regex.exec(formula)) !== null) {
-      output[n2l(myArray[1])] = row[myArray[1]].value;
+      output[n2l(myArray[1])] = numeral(row[myArray[1]].value).value() ? numeral(row[myArray[1]].value).value() : 0;
     }
     return output;
   };
@@ -37,24 +41,20 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
     newColumn.aggConfig.id = `1.computed-column-${index}`;
     newColumn.aggConfig.key = `computed-column-${index}`;
     newColumn.title = computedColumn.label;
-    console.log('old column:', tableColumn);
-    console.log('new column:', newColumn);
     return newColumn;
   };
 
   const createRows = (column, rows, computedColumn) => {
     let parser = createParser(computedColumn);
     return _.map(rows, (row) => {
-      // let newCell = _.cloneDeep(row[0]);
-      let newCell = row[0];
       let expressionParams = createExpressionsParams(computedColumn.formula, row);
-      newCell.aggConfig = row[0].aggConfig;
-      newCell.$order = row[0].$order + row.length;
-      newCell.value = parser.evaluate(expressionParams);
-      newCell.key = newCell.value;
+      let value = parser.evaluate(expressionParams);
+      console.log('Value: ', value);
+      console.log('Format: ', computedColumn.format);
+      let formattedValue = numeral(value).format(computedColumn.format);
+      let aggConfig = new AggConfig($scope.vis, {schema: 'bucket', type: 'terms'});
+      let newCell = new AggConfigResult(aggConfig, void 0, formattedValue, formattedValue);
       row.push(newCell);
-      console.log('old cell:', row[0]);
-      console.log('new cell:', newCell);
       return row;
     });
   };

@@ -34,6 +34,7 @@ function ExtendedMetricVisProvider(Private) {
         computedColumns: [{
           formula: 'col[0] * col[0]',
           label: 'Value squared',
+          format: '0,0',
           enabled: true
         }]
       },
