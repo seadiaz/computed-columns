@@ -27,6 +27,7 @@ has it own expression (e.g. col[0] * col[1] / 100).
 ## Roadmap
 
 * Selectable total function.
+* Configurable output format.
 
 ## development
 
