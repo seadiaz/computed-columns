@@ -15,7 +15,7 @@
 
                 <!-- title -->
                 <span class="vis-editor-agg-header-title">
-                    Column
+                    Computed Column
                 </span>
 
                 <!-- description -->
@@ -65,13 +65,10 @@
                   <label>Label</label>
                   <input type="text" ng-model="output.label" class="form-control ng-pristine ng-untouched ng-valid">
                 </div>
-                <div class="form-group">
-                  <label>Format</label>
-                  <input type="text" ng-model="output.format" class="form-control ng-pristine ng-untouched ng-valid">
-                </div>
             </div>
         </div>
     </div>
+
     <div ng-click="addComputedColumn($parent.vis.params.computedColumns)" class="vis-editor-agg-wide-btn">
       <div>
         <div class="btn btn-sm btn-primary">
@@ -79,46 +76,52 @@
         </div>
       </div>
     </div>
-</div>
 
-<div class="form-group">
-  <label>Per Page</label>
-  <input type="number" ng-model="vis.params.perPage" class="form-control">
-</div>
+    <div class="form-group">
+      <label>Hidden Columns</label>
+      <input type="text" ng-model="vis.params.hiddenColumns" class="form-control" placeholder="0,1,..." />
+    </div>
 
-<div class="checkbox">
-  <label>
-    <input type="checkbox" ng-model="vis.params.showMeticsAtAllLevels">
-    Show metrics for every bucket/level
-  </label>
-</div>
+    <div class="form-group">
+      <label>Per Page</label>
+      <input type="number" ng-model="vis.params.perPage" class="form-control">
+    </div>
 
-<div class="checkbox">
-  <label>
-    <input type="checkbox" ng-model="vis.params.showPartialRows">
-    Show partial rows
-  </label>
-</div>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" ng-model="vis.params.showMeticsAtAllLevels">
+        Show metrics for every bucket/level
+      </label>
+    </div>
 
-<div class="checkbox">
-  <label>
-    <input type="checkbox" ng-model="metricsAtAllLevels" disabled>
-    Calculate metrics for every bucket/level
-  </label>
-</div>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" ng-model="vis.params.showPartialRows">
+        Show partial rows
+      </label>
+    </div>
 
-<div class="checkbox">
-  <label>
-    <input type="checkbox" ng-model="vis.params.showTotal">
-    Show total
-  </label>
-</div>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" ng-model="metricsAtAllLevels" disabled>
+        Calculate metrics for every bucket/level
+      </label>
+    </div>
 
-<!-- <div>
-  <label>Total function</label>
-  <select ng-disabled="!vis.params.showTotal"
-          class="form-control"
-          ng-model="vis.params.totalFunc"
-          ng-options="x for x in totalAggregations">
-  </select>
-</div> -->
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" ng-model="vis.params.showTotal">
+        Show total
+      </label>
+    </div>
+
+    <div>
+      <label>Total function</label>
+      <select ng-disabled="!vis.params.showTotal"
+              class="form-control"
+              ng-model="vis.params.totalFunc"
+              ng-options="x for x in totalAggregations">
+      </select>
+    </div>
+
+</div>

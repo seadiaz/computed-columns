@@ -35,12 +35,10 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
 
   };
 
-  const createColumn = (tableColumn, computedColumn, index) => {
-    let newColumn = _.cloneDeep(tableColumn);
-    newColumn.aggConfig = tableColumn.aggConfig;
+  const createColumn = (computedColumn, index) => {
+    let newColumn = {aggConfig: new AggConfig($scope.vis, {schema: 'metric', type: 'count'}), title: computedColumn.label};
     newColumn.aggConfig.id = `1.computed-column-${index}`;
     newColumn.aggConfig.key = `computed-column-${index}`;
-    newColumn.title = computedColumn.label;
     return newColumn;
   };
 
@@ -49,13 +47,23 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
     return _.map(rows, (row) => {
       let expressionParams = createExpressionsParams(computedColumn.formula, row);
       let value = parser.evaluate(expressionParams);
-      console.log('Value: ', value);
-      console.log('Format: ', computedColumn.format);
-      let formattedValue = numeral(value).format(computedColumn.format);
-      let aggConfig = new AggConfig($scope.vis, {schema: 'bucket', type: 'terms'});
-      let newCell = new AggConfigResult(aggConfig, void 0, formattedValue, formattedValue);
+      let newCell = new AggConfigResult(column.aggConfig, void 0, value, value);
       row.push(newCell);
       return row;
+    });
+  };
+
+  const hideColumns = (tables, hiddenColumns) => {
+    let removedCounter = 0;
+    _(_.split(hiddenColumns, ',')).compact().sortBy().forEach((item) => {
+      let index = item * 1;
+      _.forEach(tables, (table) => {
+        table.columns.splice(index - removedCounter, 1);
+        _.forEach(table.rows, (row) => {
+          row.splice(index - removedCounter, 1);
+        });
+      });
+      removedCounter++;
     });
   };
 
@@ -69,6 +77,7 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
     let tableGroups = $scope.tableGroups = null;
     let hasSomeRows = $scope.hasSomeRows = null;
     let computedColumns = $scope.vis.params.computedColumns;
+    let hiddenColumns = $scope.vis.params.hiddenColumns;
 
     if (resp) {
       const vis = $scope.vis;
@@ -82,11 +91,13 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
 
       _.forEach(computedColumns, (computedColumn, index) => {
         _.forEach(tableGroups.tables, (table) => {
-          let newColumn = createColumn(table.columns[0], computedColumn, index);
+          let newColumn = createColumn(computedColumn, index);
           table.columns.push(newColumn);
           table.rows = createRows(newColumn, table.rows, computedColumn);
         });
       });
+
+      hideColumns(tableGroups.tables, hiddenColumns);
 
       hasSomeRows = tableGroups.tables.some(function haveRows(table) {
         if (table.tables) {
