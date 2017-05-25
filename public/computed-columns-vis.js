@@ -55,7 +55,7 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
 
   const hideColumns = (tables, hiddenColumns) => {
     let removedCounter = 0;
-    _(_.split(hiddenColumns, ',')).compact().sortBy().forEach((item) => {
+    _(hiddenColumns.split(',')).compact().sortBy().forEach((item) => {
       let index = item * 1;
       _.forEach(tables, (table) => {
         table.columns.splice(index - removedCounter, 1);
