@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.2] - 2017-05-31
+
+### Added
+- Custom ouput format (default 0,0.[00]).
+
+### Fixed
+- Formulas mapped to math constant like e (euler).
+
 ## [0.2.0] - 2017-03-31
 
 ### Added

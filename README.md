@@ -11,28 +11,21 @@ has it own expression (e.g. col[0] * col[1] / 100).
 ## Considerations
 
 * Any mathematical expression can be used to create computed columns. Even parentheses can be used to group expressions - e.g. (col[0] - col[1]) / col[0].
-* To refence a colums use word _col_ followed by brackets with zero base index inside - e.g. col[1] = column 1.
+* To refence a colums use word _col_ followed by brackets with zero base index inside - e.g. col[1] = column 1 (second column).
 * Computed column can be used to create new computed columns.
 * Multiples computed colums will be computed in order, thous, you can only use column index n-1.
 * Current Release Version: 0.4.1.
 * Hidden columns are evaluated after computed columns.
 
-## Compatibility
-
-Plugin | Kibana
--------|--------
-0.4    | 5.4
-0.3    | 5.3
-0.2    | 5.2
-
-
 ## Install
 
+From 0.5.x every release includes plugins version (x.y.z) and Kibana version (a.b.c).
+
 #### From Kibana Installation Path:
-`./bin/kibana-plugin install https://github.com/seadiaz/computed-columns/releases/download/x.y.z/computed-columns-x.y.z.zip`
+`./bin/kibana-plugin install https://github.com/seadiaz/computed-columns/releases/download/x.y.z/computed-columns-x.y.z-a.b.c.zip`
 
 #### From Docker Image:
-`kibana-plugin install https://github.com/seadiaz/computed-columns/releases/download/x.y.z/computed-columns-x.y.z.zip`
+`kibana-plugin install https://github.com/seadiaz/computed-columns/releases/download/x.y.z/computed-columns-x.y.z-a.b.c.zip`
 
 ## Roadmap
 
