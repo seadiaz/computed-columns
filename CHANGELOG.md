@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [0.4.2] - 2017-05-31
+## [0.5.0] - 2017-05-31
 
 ### Added
 - Custom ouput format (default 0,0.[00]).
