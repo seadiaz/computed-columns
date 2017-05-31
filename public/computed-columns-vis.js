@@ -4,7 +4,6 @@ import AggConfigResult from 'ui/vis/agg_config_result';
 import AggResponseTabifyTabifyProvider from 'ui/agg_response/tabify/tabify';
 import uiModules from 'ui/modules';
 import { Parser } from 'expr-eval';
-import n2l from 'number-to-letter';
 import numeral from 'numeral';
 
 const module = uiModules.get('kibana/computed-columns', ['kibana']);
@@ -21,7 +20,7 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
     let myArray;
     let output = {};
     while ((myArray = regex.exec(formula)) !== null) {
-      output[n2l(myArray[1])] = numeral(row[myArray[1]].value).value() ? numeral(row[myArray[1]].value).value() : 0;
+      output[`x${myArray[1]}`] = numeral(row[myArray[1]].value).value() ? numeral(row[myArray[1]].value).value() : 0;
     }
     return output;
   };
@@ -29,7 +28,7 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
   const createParser = (computedColumn) => {
     let expression = computedColumn.formula.replace(/col\[\d+\]/g, (value) => {
       let cleanValue = /(\d+)/.exec(value)[1];
-      return n2l(cleanValue);
+      return `x${cleanValue}`;
     });
     return Parser.parse(expression);
 

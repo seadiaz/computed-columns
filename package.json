@@ -23,7 +23,6 @@
     "eslint-plugin-mocha": "1.1.0"
   },
   "dependencies": {
-    "expr-eval": "^1.0.0",
-    "number-to-letter": "^1.0.1"
+    "expr-eval": "^1.0.0"
   }
 }
