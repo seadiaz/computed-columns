@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.6.0] - 2017-06-14
+
+### Added
+- Visualization type Data thanks to @fbaligand. PR #7
+
+### Fixed
+- Split table support.
+
 ## [0.5.0] - 2017-05-31
 
 ### Added

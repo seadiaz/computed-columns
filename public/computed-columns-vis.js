@@ -55,6 +55,19 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
     });
   };
 
+  const createTables = (tables, computedColumn, index) => {
+    _.forEach(tables, (table) => {
+      if (table.tables) {
+        createTables(table.tables, computedColumn, index);
+        return;
+      }
+
+      let newColumn = createColumn(computedColumn, index);
+      table.columns.push(newColumn);
+      table.rows = createRows(newColumn, table.rows, computedColumn);
+    });
+  };
+
   const hideColumns = (tables, hiddenColumns) => {
     if (!hiddenColumns) {
       return;
@@ -96,11 +109,7 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
       });
 
       _.forEach(computedColumns, (computedColumn, index) => {
-        _.forEach(tableGroups.tables, (table) => {
-          let newColumn = createColumn(computedColumn, index);
-          table.columns.push(newColumn);
-          table.rows = createRows(newColumn, table.rows, computedColumn);
-        });
+        createTables(tableGroups.tables, computedColumn, index);
       });
 
       hideColumns(tableGroups.tables, hiddenColumns);
