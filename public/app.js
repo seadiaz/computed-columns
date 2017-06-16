@@ -2,6 +2,7 @@ import 'plugins/computed-columns/computed-columns.less';
 import 'plugins/computed-columns/computed-columns-vis';
 import 'plugins/computed-columns/computed-columns-params';
 
+import { VisVisTypeProvider } from 'ui/vis/vis_type';
 import TemplateVisTypeTemplateVisTypeProvider from 'ui/template_vis_type/template_vis_type';
 import VisSchemasProvider from 'ui/vis/schemas';
 
@@ -11,6 +12,7 @@ import paramsTemplate from 'plugins/computed-columns/computed-columns-params.htm
 require('ui/registry/vis_types').register(ExtendedMetricVisProvider);
 
 function ExtendedMetricVisProvider(Private) {
+  const VisType = Private(VisVisTypeProvider);
   const TemplateVisType = Private(TemplateVisTypeTemplateVisTypeProvider);
   const Schemas = Private(VisSchemasProvider);
 
@@ -18,6 +20,7 @@ function ExtendedMetricVisProvider(Private) {
     name: 'computed-columns',
     title: 'Computed Columns',
     description: 'Same functionality than Data Table, but after data processing, computed columns can be added with math expressions.',
+    category: VisType.CATEGORY.DATA,
     icon: 'fa-table',
     template: visTemplate,
     params: {
