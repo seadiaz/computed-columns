@@ -1,15 +1,15 @@
 import _ from 'lodash';
-import VisAggConfigProvider from 'ui/vis/agg_config';
+import { VisAggConfigProvider } from 'ui/vis/agg_config';
 import AggConfigResult from 'ui/vis/agg_config_result';
-import AggResponseTabifyTabifyProvider from 'ui/agg_response/tabify/tabify';
-import uiModules from 'ui/modules';
+import { AggResponseTabifyProvider } from 'ui/agg_response/tabify/tabify';
+import { uiModules } from 'ui/modules';
 import { Parser } from 'expr-eval';
 import numeral from 'numeral';
 
 const module = uiModules.get('kibana/computed-columns', ['kibana']);
 module.controller('ComputedColumnsVisController', ($scope, $element, Private) => {
 
-  const tabifyAggResponse = Private(AggResponseTabifyTabifyProvider);
+  const tabifyAggResponse = Private(AggResponseTabifyProvider);
   const AggConfig = Private(VisAggConfigProvider);
 
   const uiStateSort = ($scope.uiState) ? $scope.uiState.get('vis.params.sort') : {};

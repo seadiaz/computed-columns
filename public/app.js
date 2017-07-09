@@ -2,20 +2,22 @@ import 'plugins/computed-columns/computed-columns.less';
 import 'plugins/computed-columns/computed-columns-vis';
 import 'plugins/computed-columns/computed-columns-params';
 
-import VisVisTypeProvider from 'ui/vis/vis_type';
-import TemplateVisTypeTemplateVisTypeProvider from 'ui/template_vis_type/template_vis_type';
-import VisSchemasProvider from 'ui/vis/schemas';
+import { VisVisTypeProvider } from 'ui/vis/vis_type';
+import { TemplateVisTypeProvider } from 'ui/template_vis_type/template_vis_type';
+import { VisSchemasProvider } from 'ui/vis/schemas';
 
 import visTemplate from 'plugins/computed-columns/computed-columns-vis.html';
 import paramsTemplate from 'plugins/computed-columns/computed-columns-params.html';
 
 import image from './images/icon-table.svg';
 
-require('ui/registry/vis_types').register(ExtendedMetricVisProvider);
+import { VisTypesRegistryProvider } from 'ui/registry/vis_types';
+
+VisTypesRegistryProvider.register(ExtendedMetricVisProvider);
 
 function ExtendedMetricVisProvider(Private) {
   const VisType = Private(VisVisTypeProvider);
-  const TemplateVisType = Private(TemplateVisTypeTemplateVisTypeProvider);
+  const TemplateVisType = Private(TemplateVisTypeProvider);
   const Schemas = Private(VisSchemasProvider);
 
   return new TemplateVisType({
