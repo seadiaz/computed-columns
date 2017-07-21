@@ -20,7 +20,7 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
     let myArray;
     let output = {};
     while ((myArray = regex.exec(formula)) !== null) {
-      output[`x${myArray[1]}`] = numeral(row[myArray[1]].value).value() ? numeral(row[myArray[1]].value).value() : 0;
+      output[`x${myArray[1]}`] = (typeof row[myArray[1]].value == "number") ? numeral(row[myArray[1]].value).value() : row[myArray[1]].value;
     }
     return output;
   };
@@ -48,7 +48,7 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
       let value = parser.evaluate(expressionParams);
       let newCell = new AggConfigResult(column.aggConfig, void 0, value, value);
       newCell.toString = () => {
-        return numeral(value).format(computedColumn.format);
+        return (typeof value == "number") ? numeral(value).format(computedColumn.format) : value;
       };
       row.push(newCell);
       return row;
