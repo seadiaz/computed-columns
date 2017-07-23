@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.7.0] - 2017-07-22
+
+### Added
+- Support for Kibana 5.5.5.
+- Support for string cols.
+
 ## [0.6.0] - 2017-06-14
 
 ### Added
