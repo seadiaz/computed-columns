@@ -44,7 +44,8 @@ function ExtendedMetricVisProvider(Private) {
           label: 'Value squared',
           format: '0,0.[00]',
           enabled: true
-        }]
+        }],
+        hideExportLinks: false
       },
       editor: paramsTemplate
     },
