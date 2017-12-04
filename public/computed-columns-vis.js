@@ -87,6 +87,17 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
     });
   };
 
+  const shouldShowPagination = (tables, perPage) => {
+    return tables.some(function(table) {
+      if (table.tables) {
+        return shouldShowPagination(table.tables, perPage);
+      }
+      else {
+    	  return table.rows.length > perPage;
+      }
+    });
+  };
+
   $scope.sort = $scope.vis.params.sort;
   $scope.$watchCollection('sort', (newSort) => {
     $scope.uiState.set('vis.params.sort', newSort);
@@ -122,9 +133,15 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
         return table.rows.length > 0;
       });
 
+      const showPagination = hasSomeRows && params.perPage && shouldShowPagination(tableGroups.tables, params.perPage);
+      $scope.tableVisContainerClass = {
+        'hide-pagination': !showPagination,
+        'hide-export-links': params.hideExportLinks
+      };
+
       $element.trigger('renderComplete');
     }
-
+    
     $scope.hasSomeRows = hasSomeRows;
     if (hasSomeRows) {
       $scope.tableGroups = tableGroups;
