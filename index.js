@@ -4,7 +4,7 @@ export default function (kibana) {
   return new kibana.Plugin({
     uiExports: {
       visTypes: [
-        'plugins/computed-columns/app'
+        'plugins/computed-columns/computed-columns-vis'
       ]
     }
   });
