@@ -4,7 +4,7 @@
   "description": "This visualization plugin is like a table, but with computed columns",
   "main": "index.js",
   "kibana": {
-    "version": "5.5.0"
+    "version": "kibana"
   },
   "scripts": {
     "lint": "eslint",
