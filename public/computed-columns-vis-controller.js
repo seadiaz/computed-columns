@@ -119,7 +119,7 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
     let computedColumns = $scope.vis.params.computedColumns;
     let hiddenColumns = $scope.vis.params.hiddenColumns;
 
-    if (resp.hits) {
+    if (resp) {
       const vis = $scope.vis;
       const params = vis.params;
       //console.log('resp.hits.total: ' + resp.hits.total);
