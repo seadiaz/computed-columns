@@ -82,6 +82,40 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
     });
   };
 
+  const hideColumns = (tables, hiddenColumns) => {
+    if (!hiddenColumns) {
+      return;
+    }
+
+    let removedCounter = 0;
+    _.forEach(hiddenColumns.split(','), (item) => {
+      let index = item * 1;
+      _.forEach(tables, (table) => {
+        table.columns.splice(index - removedCounter, 1);
+        _.forEach(table.rows, (row) => {
+          row.splice(index - removedCounter, 1);
+        });
+      });
+      removedCounter++;
+    });
+  };
+
+  const shouldShowPagination = (tables, perPage) => {
+    return tables.some(function(table) {
+      if (table.tables) {
+        return shouldShowPagination(table.tables, perPage);
+      }
+      else {
+        return table.rows.length > perPage;
+      }
+      });
+    };
+
+    $scope.sort = $scope.vis.params.sort;
+    $scope.$watchCollection('sort', (newSort) => {
+    $scope.uiState.set('vis.params.sort', newSort);
+  });
+
   $scope.$watchMulti(['esResponse', 'vis.params'], ([resp]) => {
   //$scope.$watch('esResponse', function (resp) {
     console.debug('[computed-columns] Watch es response and vis params called');
@@ -100,14 +134,16 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
         asAggConfigResults: true
       });
 
+      _.forEach(computedColumns, (computedColumn, index) => {
+        createTables(tableGroups.tables, computedColumn, index);
+      });
+
+      hideColumns(tableGroups.tables, hiddenColumns);
+
       hasSomeRows = tableGroups.tables.some(function haveRows(table) {
         if (table.tables) return table.tables.some(haveRows);
         return table.rows.length > 0;
       })
-
-      _.forEach(computedColumns, (computedColumn, index) => {
-        createTables(tableGroups.tables, computedColumn, index);
-      });
        
       $scope.renderComplete();
     }
