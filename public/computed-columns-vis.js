@@ -23,9 +23,7 @@ function ExtendedMetricVisProvider(Private) {
     icon: 'fa-table',
     description: 'Same functionality than Data Table, but after data processing, computed columns can be added with math expressions.',
     category: CATEGORY.DATA,
-    
-    //visualization: VisController,
-
+    responseHandler: 'none',
     visConfig: {
       defaults: {
         perPage: 10,
@@ -68,4 +66,3 @@ function ExtendedMetricVisProvider(Private) {
 }
 
 export default ExtendedMetricVisProvider;
-
