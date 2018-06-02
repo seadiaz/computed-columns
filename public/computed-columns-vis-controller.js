@@ -35,10 +35,8 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
   const createParser = (computedColumn) => {
     let expression = computedColumn.formula.replace(/col\[\d+\]/g, (value) => {
       let cleanValue = /(\d+)/.exec(value)[1];
-      console.log('cleanValue:' + cleanValue);
       return `x${cleanValue}`;
     });
-    console.log('Parser.parse(expression):' + Parser.parse(expression));
     return Parser.parse(expression);
   };
 
@@ -47,6 +45,22 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
     newColumn.aggConfig.id = `1.computed-column-${index}`;
     newColumn.aggConfig.key = `computed-column-${index}`;
     return newColumn;
+  };
+
+  const createRows = (column, rows, computedColumn) => {
+    let parser = createParser(computedColumn);
+
+    return _.map(rows, (row) => {
+      let expressionParams = createExpressionsParams(computedColumn.formula, row);
+      let value = parser.evaluate(expressionParams);
+      let newCell = new AggConfigResult(column.aggConfig, void 0, value, value);
+
+      newCell.toString = () => {
+        return (typeof value === 'number') ? numeral(value).format(computedColumn.format) : value;
+      };
+      row.push(newCell);
+      return row;
+    });
   };
 
   const createTables = (tables, computedColumn, index) => {
@@ -59,26 +73,6 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
       let newColumn = createColumn(computedColumn, index);
       table.columns.push(newColumn);
       table.rows = createRows(newColumn, table.rows, computedColumn);
-    });
-  };
-
-  const createRows = (column, rows, computedColumn) => {
-    let parser = createParser(computedColumn);
-
-    return _.map(rows, (row) => {
-      let expressionParams = createExpressionsParams(computedColumn.formula, row);
-      let value = parser.evaluate(expressionParams);
-      console.log('value: ' + value);
-      console.log('column.aggConfig: ' + column.aggConfig);
-
-      let newCell = new AggConfigResult(column.aggConfig, void 0, value, value);
-
-      newCell.toString = () => {
-        return (typeof value === 'number') ? numeral(value).format(computedColumn.format) : value;
-      };
-      row.push(newCell);
-      return row;
-    
     });
   };
 
@@ -101,25 +95,23 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
   };
 
   const shouldShowPagination = (tables, perPage) => {
-    return tables.some(function(table) {
+    return tables.some(function (table) {
       if (table.tables) {
         return shouldShowPagination(table.tables, perPage);
       }
       else {
         return table.rows.length > perPage;
       }
-      });
-    };
+    });
+  };
 
-    $scope.sort = $scope.vis.params.sort;
-    $scope.$watchCollection('sort', (newSort) => {
+  $scope.sort = $scope.vis.params.sort;
+  $scope.$watchCollection('sort', (newSort) => {
     $scope.uiState.set('vis.params.sort', newSort);
   });
 
   $scope.$watchMulti(['esResponse', 'vis.params'], ([resp]) => {
-  //$scope.$watch('esResponse', function (resp) {
-    console.debug('[computed-columns] Watch es response and vis params called');
-    var tableGroups = $scope.tableGroups = null;
+    let tableGroups = $scope.tableGroups = null;
     let hasSomeRows = $scope.hasSomeRows = null;
     let computedColumns = $scope.vis.params.computedColumns;
     let hiddenColumns = $scope.vis.params.hiddenColumns;
@@ -143,11 +135,16 @@ module.controller('ComputedColumnsVisController', ($scope, $element, Private) =>
       hasSomeRows = tableGroups.tables.some(function haveRows(table) {
         if (table.tables) return table.tables.some(haveRows);
         return table.rows.length > 0;
-      })
-       
+      });
+
+      $scope.tableVisContainerClass = {
+        'hide-pagination': !shouldShowPagination,
+        'hide-export-links': params.hideExportLinks
+      };
+
       $scope.renderComplete();
     }
-    
+
     $scope.hasSomeRows = hasSomeRows;
     if (hasSomeRows) {
       $scope.tableGroups = tableGroups;
